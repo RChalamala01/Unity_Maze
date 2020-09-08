@@ -1,3 +1,3 @@
 # Unity_Maze
 
-Maze Creation and AI.
+Unity driven maze with path finding AI.
