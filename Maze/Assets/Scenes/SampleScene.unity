@@ -328,10 +328,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
-  tilePrefab: {fileID: 4551536800402887331, guid: 2cba50438eab54581bfaef0fd397326b, type: 3}
   tileParent: {fileID: 1021668114}
-  width: 71
-  height: 49
+  tilePrefab: {fileID: 4551536800402887331, guid: 2cba50438eab54581bfaef0fd397326b, type: 3}
+  width: 30
+  height: 30
+  floorMaterial: {fileID: 2100000, guid: 9653b31f7d6874947af9a1fab5c63d81, type: 2}
 --- !u!4 &1021668114
 Transform:
   m_ObjectHideFlags: 0
