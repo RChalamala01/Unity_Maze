@@ -108,9 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a11e937355942749fc514d11902dfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal: {fileID: 2100000, guid: 7e493689f0ced4e4797a8432e988834c, type: 2}
-  hover: {fileID: 2100000, guid: 0544f205be8254f72822fe3fb5a64ea6, type: 2}
-  selected: {fileID: 2100000, guid: 6b58d7297537e445a8278552ce4b364c, type: 2}
-  tileParent: {fileID: 0}
-  tilePrefab: {fileID: 4551536800402887331}
-  isWall: 0
+  path: {fileID: 2100000, guid: 7e493689f0ced4e4797a8432e988834c, type: 2}
+  visit: {fileID: 2100000, guid: 0544f205be8254f72822fe3fb5a64ea6, type: 2}
+  wall: {fileID: 2100000, guid: 6b58d7297537e445a8278552ce4b364c, type: 2}
+  isPath: 0
+  visited: 0

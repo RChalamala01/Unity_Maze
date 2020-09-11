@@ -330,8 +330,8 @@ MonoBehaviour:
   cam: {fileID: 963194227}
   tileParent: {fileID: 1021668114}
   tilePrefab: {fileID: 4551536800402887331, guid: 2cba50438eab54581bfaef0fd397326b, type: 3}
-  width: 134
-  height: 30
+  width: 100
+  height: 100
   floorMaterial: {fileID: 2100000, guid: 9653b31f7d6874947af9a1fab5c63d81, type: 2}
 --- !u!4 &1021668114
 Transform:

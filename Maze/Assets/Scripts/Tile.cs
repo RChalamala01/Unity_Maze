@@ -3,9 +3,9 @@
 public class Tile : MonoBehaviour
 {
     Renderer tileRenderer;
-    public Material normal;
-    public Material hover;
-    public Material selected;
+    public Material path;
+    public Material visit;
+    public Material wall;
     
     public int isPath = 0;
     public bool visited = false;
@@ -21,16 +21,16 @@ public class Tile : MonoBehaviour
     {
         if (isPath == 1)
         {
-            tileRenderer.material = normal;
+            tileRenderer.material = path;
         }
         else
         {
-            tileRenderer.material = selected;
+            tileRenderer.material = wall;
         }
 
         if (visited)
         {
-            tileRenderer.material = hover;
+            tileRenderer.material = visit;
         }
     }
 
