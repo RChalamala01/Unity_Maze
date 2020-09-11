@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     public Material selected;
     
     public int isPath = 0;
+    public bool visited = false;
 
 
     private void Start()
@@ -18,10 +19,6 @@ public class Tile : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Tab))
-        {
-            tileRenderer.material = selected;
-        }
         if (isPath == 1)
         {
             tileRenderer.material = normal;
@@ -29,6 +26,11 @@ public class Tile : MonoBehaviour
         else
         {
             tileRenderer.material = selected;
+        }
+
+        if (visited)
+        {
+            tileRenderer.material = hover;
         }
     }
 

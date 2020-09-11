@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class MazeBuilder : MonoBehaviour
@@ -12,8 +13,6 @@ public class MazeBuilder : MonoBehaviour
     public int width;
     public int height;
     public GameObject[,] tileMatrix;
-    public List<(int, int)> stack = new List<(int, int)>();
-    public List<(int, int)> list = new List<(int, int)>();
 
     public Material floorMaterial;
 
@@ -22,21 +21,84 @@ public class MazeBuilder : MonoBehaviour
         tileMatrix = new GameObject[height, width];
         InstantiateMaze(height, width);
         DepthFirstRandom(1, 1);
+        StartCoroutine(MazeSearch());
         //DepthFirstStack(1, 1);
         //PrimsAlgorithm();
     }
 
+
+
+    IEnumerator MazeSearch()
+    {
+        (int x, int y) = (1, 1);
+        (int xEnd, int yEnd) = (height - 2, width - 2);
+
+        List<(int, int)> list = new List<(int, int)>();
+        tileMatrix[x, y].GetComponent<Tile>().visited = true;
+
+        bool done = false;
+        int counter = 2000;
+
+        while (!done)
+        {
+            counter--;
+
+            int before = list.Count;
+
+            if (IsPath(x + 1, y) && !list.Contains((x + 1, y))) { list.Add((x + 1, y)); }
+            if (IsPath(x - 1, y) && !list.Contains((x - 1, y))) { list.Add((x - 1, y)); }
+            if (IsPath(x, y + 1) && !list.Contains((x, y + 1))) { list.Add((x, y + 1)); }
+            if (IsPath(x, y - 1) && !list.Contains((x, y - 1))) { list.Add((x, y - 1)); }
+
+            if (before == list.Count) { list.Remove((x, y)); }
+
+            float minDistance = Mathf.Infinity;
+            
+            for (int i = 0; i < list.Count; i++)
+            {
+                Debug.Log(list[i]);
+                if (EuclideanDistance(list[i], xEnd, yEnd) < minDistance)
+                {
+                    minDistance = EuclideanDistance(list[i], xEnd, yEnd);
+                    (x, y) = list[i];
+                }
+            }
+            tileMatrix[x, y].GetComponent<Tile>().visited = true;
+            list.Remove((x, y));
+            if (minDistance == 0) { done = true; }
+            yield return new WaitForSeconds(0.0001f);
+        }
+        yield return null;
+
+    }
+
+    int ManhattanDistance((int, int) tile, int xEnd, int yEnd)
+    {
+        (int x, int y) = tile;
+        return Mathf.Abs(xEnd - x) + Mathf.Abs(yEnd - y);
+    }
+
+    float EuclideanDistance((int, int) tile, int xEnd, int yEnd)
+    {
+        (int x, int y) = tile;
+        return Mathf.Pow(Mathf.Abs(xEnd - x), 2) + Mathf.Pow(Mathf.Abs(yEnd - y), 2);
+    }
+
+
+
     void DepthFirstRandom(int i, int j)
     {
+        List<(int, int)> list = new List<(int, int)>();
         list.Add((i, j));
         int x;
         int y;
+        int max_nodes = 0;
 
         while (list.Count != 0)
         {
 
             int randIndex = Random.Range(0, list.Count - 1);
-            Debug.Log(list.Count);
+            if (list.Count > max_nodes) { max_nodes = list.Count; }
             (x, y) = list[randIndex];
             list.Remove((x, y));
 
@@ -51,13 +113,16 @@ public class MazeBuilder : MonoBehaviour
             if (IsViablePath(x, y - 1) && !list.Contains((x, y - 1))) { list.Add((x, y - 1)); }
             else { list.Remove((x, y - 1)); }
         }
-
+        tileMatrix[height - 2, width - 2].GetComponent<Tile>().isPath = 1;
+        tileMatrix[height - 3, width - 2].GetComponent<Tile>().isPath = 1;
+        tileMatrix[height - 2, width - 3].GetComponent<Tile>().isPath = 1;
+        Debug.Log(max_nodes);
     }
 
 
     void DepthFirstStack(int i, int j)
     {
-
+        List<(int, int)> stack = new List<(int, int)>();
         stack.Add((i, j));
         int x;
         int y;
@@ -116,12 +181,24 @@ public class MazeBuilder : MonoBehaviour
 
     }
 
+    bool IsPath(int i, int j)
+    {
+        if (i >= height - 1 || i <= 0 || j >= width - 1 || j <= 0)
+        {
+            return false;
+        }
+        if (tileMatrix[i, j].GetComponent<Tile>().isPath == 1 && !tileMatrix[i, j].GetComponent<Tile>().visited)
+        {
+            return true;
+        }
+        return false;
 
+    }
 
     // is the tile surrounded by more than one path tile
     bool IsViablePath(int i, int j)
     {
-        if (i >= width - 1 || i <= 0 || j >= height - 1|| j <= 0)
+        if (i >= height - 1 || i <= 0 || j >= width - 1|| j <= 0)
         {
             return false;
         }
